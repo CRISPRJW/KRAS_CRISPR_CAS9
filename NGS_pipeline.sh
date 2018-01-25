@@ -9,22 +9,21 @@ Bwa=/path/to/bwa-0.7.12/bwa
 Bwa_index=/path/to/bwa-0.7.12/Index
 ref_fa=${Bwa_index}/ref.fa
 Samtools=/path/to/samtools-1.6/samtools
+
+FiveAdapt=TATTATAAGGCCTGCTGAAA
+ThreeAdapt=TTCAGAATCATTTTGTGGACGAATATGATCCAA # Tumor
+#ThreeAdapt=AGGCAAGAGTGCCTTGACGATACAGCTAATTCAGAATCATTTTGTGGACGAATATGATCCAA
 		
 Single() {
 	for SamplePath in `cat $Sample_list`;do
 		SamplePath=${SamplePath/\r/}
 		Sample=${SamplePath/\//_}
-		echo ${Sample}
-		echo ${SamplePath}
 		
 		FastQC_input=${FASTQ_dir}/${SamplePath}.fastq.gz
 		FastQC_outdir=path/to/FastQC
 		$FastQC -f fastq -o ${FastQC_outdir} -d ${FastQC_outdir} -t 10 ${FastQC_input}
 
 		Output=/path/to/Result/CutAdapt
-		FiveAdapt=TATTATAAGGCCTGCTGAAA
-		ThreeAdapt=TTCAGAATCATTTTGTGGACGAATATGATCCAA # Tumor
-		#ThreeAdapt=AGGCAAGAGTGCCTTGACGATACAGCTAATTCAGAATCATTTTGTGGACGAATATGATCCAA
 		
 		$CutAdapt -g ${FiveAdapt} -o ${Output}/${Sample}.fastq.gz ${FASTQ_dir}/${SamplePath}
 		$CutAdapt -a ThreePrimeCut=${ThreeAdapt} -o ${Output}/${Sample}_{name}.fastq.gz ${Output}/${Sample}.fastq.gz
@@ -52,9 +51,7 @@ Pair() {
 			$FastQC -f fastq -o ${FastQC_outdir} -d ${FastQC_outdir} -t 10 ${FastQC_input}
 
 			Output=/path/to/Result/CutAdapt
-			FiveAdapt=TATTATAAGGCCTGCTGAAA
-			ThreeAdapt=TTCAGAATCATTTTGTGGACGAATATGATCCAA # Tumor
-			#ThreeAdapt=AGGCAAGAGTGCCTTGACGATACAGCTAATTCAGAATCATTTTGTGGACGAATATGATCCAA
+
 			$CutAdapt -g ${FiveAdapt} -o ${Output}/${Sample}.fastq.gz ${FASTQ_dir}/${Sample}.fastq.gz
 			$CutAdapt -a ThreePrimeCut=${ThreeAdapt} -o ${Output}/trimmed-${Sample}_{name}.fastq.gz ${Output}/${Sample}.fastq.gz
 
