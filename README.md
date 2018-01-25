@@ -1,6 +1,6 @@
 # NGS pipeline & post processing
 
-step 1. Mapping NGS reads -> Adapter trimming -> index & sort bam
+step 1. Mapping NGS reads -> index & sort bam
 
 ./NGS_pipeline.sh
 
